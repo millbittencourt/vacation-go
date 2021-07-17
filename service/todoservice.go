@@ -21,9 +21,10 @@ func Find() []entity.Todo {
 }
 
 func SetTodoFinished(todoId int) {
-	for i, todo := range todoList {
-		if todoId == todo.Id {
-			todoList[i].Finished = true
-		}
-	}
+	data.SetTodoFinished(todoId)
+	// for _, todo := range todoList {
+	// if todoId == todo.Id {
+	// todoList[i].Finished = true
+	// }
+	// }
 }

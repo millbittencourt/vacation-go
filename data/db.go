@@ -24,8 +24,6 @@ func InitDatabase() {
 		log.Print("db is up")
 		defer database.Close()
 
-		log.Print("db created")
-
 		createTodoTable(database)
 		log.Print("table created")
 
@@ -93,4 +91,22 @@ func FindTodo() []entity.Todo {
 	defer row.Close()
 
 	return todoList
+}
+
+func SetTodoFinished(todoId int) {
+	db, _ := sql.Open("sqlite3", "./database.db")
+
+	query := `UPDATE todo SET finished = true WHERE id = ?`
+
+	statement, err := db.Prepare(query)
+
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	_, err = statement.Exec(todoId)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	defer db.Close()
 }
