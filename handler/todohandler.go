@@ -12,7 +12,7 @@ import (
 )
 
 func Health(responseWriter http.ResponseWriter, request *http.Request) {
-	fmt.Fprint(responseWriter, "Server OK 3.0")
+	fmt.Fprint(responseWriter, "Server OK")
 }
 
 func GetTodo(responseWriter http.ResponseWriter, request *http.Request) {
@@ -52,15 +52,31 @@ func InsertTodo(responseWriter http.ResponseWriter, request *http.Request) {
 func SetTodoFinished(responseWriter http.ResponseWriter, request *http.Request) {
 	if request.Method == "PUT" {
 		query := request.URL.Query()
-		todo_id := query.Get("todo-id")
+		todoIdParam := query.Get("todo-id")
 
-		todoId, err := strconv.Atoi(todo_id)
+		todoId, err := strconv.Atoi(todoIdParam)
 
 		if err != nil {
 			http.Error(responseWriter, "Error parsing param", http.StatusInternalServerError)
 		}
 		service.SetTodoFinished(todoId)
 
+	} else {
+		http.Error(responseWriter, "Invalid request method", http.StatusMethodNotAllowed)
+	}
+}
+
+func DeleteTodo(responseWriter http.ResponseWriter, request *http.Request) {
+	if request.Method == "DELETE" {
+		query := request.URL.Query()
+		todoIdParam := query.Get("todo-id")
+
+		todoId, err := strconv.Atoi(todoIdParam)
+		if err != nil {
+			http.Error(responseWriter, "Error parsing param", http.StatusInternalServerError)
+		}
+
+		service.DeleteTodo(todoId)
 	} else {
 		http.Error(responseWriter, "Invalid request method", http.StatusMethodNotAllowed)
 	}

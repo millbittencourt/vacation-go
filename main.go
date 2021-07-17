@@ -10,6 +10,6 @@ import (
 
 func main() {
 	data.InitDatabase()
-	log.Print("server is on mami")
+	log.Print("server is on, mami")
 	http.ListenAndServe(":8888", route.RegisterRoute())
 }
