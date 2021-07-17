@@ -99,7 +99,23 @@ func SetTodoFinished(todoId int) {
 	query := `UPDATE todo SET finished = true WHERE id = ?`
 
 	statement, err := db.Prepare(query)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
 
+	_, err = statement.Exec(todoId)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	defer db.Close()
+}
+
+func DeleteTodo(todoId int) {
+	db, _ := sql.Open("sqlite3", "./database.db")
+
+	query := `DELETE FROM todo WHERE id = ?`
+
+	statement, err := db.Prepare(query)
 	if err != nil {
 		log.Fatal(err.Error())
 	}

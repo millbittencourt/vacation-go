@@ -1,6 +1,7 @@
 package service
 
 import (
+	"mille.com/todo/data"
 	"mille.com/todo/entity"
 )
 
@@ -8,32 +9,17 @@ var todoList []entity.Todo
 var id int
 
 func Insert(todo entity.Todo) {
-	id++
-	todo.Id = id
-	todoList = append(todoList, todo)
+	data.InsertTodo(todo)
 }
 
 func Find() []entity.Todo {
-	return todoList
+	return data.FindTodo()
 }
 
 func SetTodoFinished(todoId int) {
-	for i, todo := range todoList {
-		if todoId == todo.Id {
-			todoList[i].Finished = true
-		}
-	}
+	data.SetTodoFinished(todoId)
 }
 
 func DeleteTodo(todoId int) {
-	var newTodoList []entity.Todo
-	for _, todo := range todoList {
-		if todoId != todo.Id {
-			newTodoList = append(newTodoList, todo)
-		}
-	}
-	if newTodoList != nil {
-		// todoList = nil
-		todoList = newTodoList
-	}
+	data.DeleteTodo(todoId)
 }
